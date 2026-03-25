@@ -1,14 +1,16 @@
 """
-Python CGPA Calculator (V1)
---------------------------------
-- Stores raw scores in a list
+Python CGPA Calculator (V2 - CSV Version)
+----------------------------------------
+- Stores course data in CSV file
+- Reads and writes persistent data
 - Converts raw scores to GPA
-- Treats credit unit as constant (3)
-- Computes CGPA dynamically (not stored)
-
+- Calculates CGPA dynamically
+- Menu-driven program
 """
-import time
+import os
+import csv
 
+FILENAME = "grades.csv"
 credits = 3  # constant credit per course
 
 def score_to_gpa(score):
@@ -36,60 +38,127 @@ def score_to_gpa(score):
     else:
         return 0.0
     
-def input_scores():
-    """ Ask user for how many courses completed and their raw scores, store in a list """
-    scores = []
+# -----------------------------
+# File Handling
+# -----------------------------
+def initialize_file():
+    """Create CSV file with header if it doesn't exist"""
+    if not os.path.exists(FILENAME):
+        with open(FILENAME, "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(["course", "score"])
+
+
+def read_courses():
+    """Read all courses from CSV"""
+    courses = []
+    try:
+        with open(FILENAME, newline="") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                courses.append({
+                    "course": row["course"],
+                    "score": float(row["score"])
+                })
+    except FileNotFoundError:
+        print("No data file found.")
+    return courses
+
+
+def add_courses():
+    """Add new courses to CSV"""
     while True:
         try:
-            num_courses = int(input("Enter the number of courses completed: "))
-            if num_courses <= 0:
-                print("Enter a number between 1 and 40!")
+            num = int(input("How many courses to add: "))
+            if num <= 0:
+                print("Enter a positive number!")
                 continue
             break
         except ValueError:
             print("Enter a valid integer!")
 
-    for i in range(1, num_courses + 1):
-        while True:
-            try:
-                score = float(input(f"Enter score for course number {i}: "))
-                if 0 <= score <= 100:
-                    scores.append(score)
-                    break
-                else:
-                    print("Please enter between 0 and 100!")
-            except ValueError:
-                print("Please enter a valid number!")
-    
-    return scores
+    with open(FILENAME, "a", newline="") as file:
+        writer = csv.writer(file)
 
-def calculate_cgpa(scores):
-    """ Calculate CGPA based on the list of raw scores 
-        CGPA = total_gpa / total_credits """
-    total_gpa = 0
+        for i in range(1, num + 1):
+            course = input(f"Course name {i}: ")
+
+            while True:
+                try:
+                    score = float(input(f"Score for {course}: "))
+                    if 0 <= score <= 100:
+                        break
+                    else:
+                        print("Score must be between 0 and 100!")
+                except ValueError:
+                    print("Enter a valid number!")
+
+            writer.writerow([course, score])
+
+    print("Courses added successfully!")
+
+
+# -----------------------------
+# CGPA Calculation
+# -----------------------------
+def calculate_cgpa(courses):
+    total_points = 0
     total_credits = 0
-    for score in scores:
-        gpa = score_to_gpa(score)
-        total_gpa += gpa * credits
+
+    for c in courses:
+        gpa = score_to_gpa(c["score"])
+        total_points += gpa * credits
         total_credits += credits
 
     if total_credits == 0:
-        return 0.0 # avoid division by zero
+        return 0.0
 
-    return round(total_gpa / total_credits, 2)
+    return round(total_points / total_credits, 2)
 
+
+def display_courses(courses):
+    print("\n--- Course Records ---")
+    for i, c in enumerate(courses, start=1):
+        gpa = score_to_gpa(c["score"])
+        print(f"{i}. {c['course']} | Score: {c['score']} | GPA: {gpa}")
+
+
+# -----------------------------
+# Main Menu
+# -----------------------------
 def main():
-    print("\nWelcome to UoPeople CGPA Calculator! (V1)\n")
+    initialize_file()
 
-    scores = input_scores()
+    print("\nWelcome to UoPeople CGPA Calculator (V2)\n")
 
-    print("\nCalculating CGPA...")
-    for i, score in enumerate(scores, start=1):
-        time.sleep(0.5)
-        print(f"Course {i}: Score = {score}, GPA = {score_to_gpa(score)}")
+    while True:
+        print("\nMenu:")
+        print("1. Add Courses")
+        print("2. View Courses & CGPA")
+        print("3. Exit")
 
-    cgpa = calculate_cgpa(scores)
-    print(f"\nYour CGPA is: {cgpa}")
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            add_courses()
+
+        elif choice == "2":
+            courses = read_courses()
+
+            if not courses:
+                print("No data available.")
+                continue
+
+            display_courses(courses)
+            cgpa = calculate_cgpa(courses)
+            print(f"\nYour CGPA is: {cgpa}")
+
+        elif choice == "3":
+            print("Goodbye!")
+            break
+
+        else:
+            print("Invalid choice!")
 
 
 if __name__ == "__main__":
