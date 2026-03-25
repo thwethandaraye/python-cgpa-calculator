@@ -73,7 +73,9 @@ The final CGPA is rounded to 2 decimal places.
 1. Clone the repository
 2. Navigate to the project folder
 3. Run:
-python cgpa_calculator.py
+```python 
+cgpa_calculator.py
+```
 
 ## 📂 Example Usage
 ### Add Courses
@@ -86,13 +88,13 @@ python cgpa_calculator.py
 
 #### Example Interaction:
 
-Choose an option: 1
+Choose an option: 1  
 How many courses to add: 2
 
-Course name 1: Math
+Course name 1: Math  
 Score for Math: 95
 
-Course name 2: English
+Course name 2: English  
 Score for English: 88
 
 Courses added successfully!
@@ -101,8 +103,9 @@ Courses added successfully!
 Choose an option: 2
 
 --- Course Records ---
-1. Math | Score: 95.0 | GPA: 4.0
-2. English | Score: 88.0 | GPA: 3.33
+|-------|-------|-------|
+| 1. Math | Score: 95.0 | GPA: 4.0 |
+| 2. English | Score: 88.0 | GPA: 3.33 |
 
 Your CGPA is: 3.67
 
