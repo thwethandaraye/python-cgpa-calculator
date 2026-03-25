@@ -38,6 +38,8 @@ The execution entry point is protected using:
 ```python
 if __name__ == "__main__":
     main()
+```
+
 📁 Data Storage (CSV)
 
 Course data is stored in a CSV file:
