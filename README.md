@@ -103,7 +103,8 @@ Courses added successfully!
 Choose an option: 2
 
 --- Course Records ---
-|-------|-------|-------|
+| Subject | Score | GPA |
+|---------|-------|-----|
 | 1. Math | Score: 95.0 | GPA: 4.0 |
 | 2. English | Score: 88.0 | GPA: 3.33 |
 
