@@ -1,133 +1,124 @@
-# Python CGPA Calculator (V1)
+🚀 Python CGPA Calculator (V2 – CSV Storage)
 
-A simple Command-Line Interface (CLI) application built with Python to calculate CGPA based on raw course scores using the UoPeople grading scale.
+# Python CGPA Calculator (V2)
+
+A Command-Line Interface (CLI) application built with Python to calculate CGPA using the UoPeople grading scale, with persistent data storage using CSV files.
 
 ---
 
 ## 📌 Project Overview
 
-This project simulates a basic academic CGPA calculation system. It is designed with modular functions and clean program structure, following good backend-oriented coding practices.
+This project extends the V1 CGPA calculator by introducing file-based data persistence. Instead of storing scores temporarily, course data is now saved and reused across program runs.
 
 The calculator:
 
-* Accepts the number of completed courses
-* Collects raw scores (0–100)
-* Converts scores to GPA using the UoPeople grading scale
+* Stores course data in a CSV file
+* Allows adding new courses interactively
+* Reads and processes stored data
+* Converts raw scores (0–100) to GPA
 * Treats credit units as a constant (3 per course)
-* Dynamically calculates CGPA (not stored permanently)
+* Dynamically calculates CGPA from stored records
 
 ---
 
 ## 🏗️ Architecture Design
 
-The program follows a simple modular structure:
+The program follows a modular and structured design:
 
 * `score_to_gpa(score)` → Converts raw score to GPA
-* `input_scores()` → Handles user input and validation
-* `calculate_cgpa(scores)` → Computes final CGPA
-* `main()` → Controls application flow
+* `initialize_file()` → Ensures CSV file exists with header
+* `add_courses()` → Handles user input and saves data to CSV
+* `read_courses()` → Reads stored data from CSV file
+* `calculate_cgpa(courses)` → Computes CGPA from stored data
+* `display_courses(courses)` → Displays course records
+* `main()` → Controls application flow (menu system)
 
 The execution entry point is protected using:
 
 ```python
 if __name__ == "__main__":
     main()
-```
+📁 Data Storage (CSV)
 
-This ensures the file can be imported as a module without automatically running the CLI.
+Course data is stored in a CSV file:
 
----
+course,score
+Math,95
+English,88
+Python,76
 
-## 🧮 CGPA Formula
+This enables persistent storage and reuse of academic records.
 
-[
-CGPA = \frac{\sum (GPA \times Credit)}{Total Credits}
-]
+🧮 CGPA Formula
+CGPA = (Σ GPA × Credit) / Total Credits
 
 Since each course has a constant credit of 3:
 
-[
-Total Credits = Number of Courses \times 3
-]
+Total Credits = Number of Courses × 3
 
 The final CGPA is rounded to 2 decimal places.
 
----
-
-## 🛠️ Technologies Used
-
-* Python 3
-* Standard Library (`time` for optional animation)
+🛠️ Technologies Used
+Python 3
+Standard Library:
+csv → file handling
+os → file checking
 
 No external libraries required.
 
----
-
-## ▶️ How to Run
-
-1. Clone the repository
-2. Navigate to the project folder
-3. Run:
-
-```bash
+▶️ How to Run
+Clone the repository
+Navigate to the project folder
+Run:
 python cgpa_calculator.py
-```
+📂 Example Usage
+Add Courses
+Menu:
+1. Add Courses
+2. View Courses & CGPA
+3. Exit
 
----
+Choose an option: 1
+How many courses to add: 2
 
-## 📂 Example Output
+Course name 1: Math
+Score for Math: 95
 
-```
-Welcome to UoPeople CGPA Calculator! (V1)
+Course name 2: English
+Score for English: 88
 
-Enter the number of courses completed: 3
-Enter score for course number 1: 94
-Enter score for course number 2: 88
-Enter score for course number 3: 76
+Courses added successfully!
+View CGPA
+Choose an option: 2
 
-Calculating CGPA...
-Course 1: Score = 94, GPA = 4.0
-Course 2: Score = 88, GPA = 3.33
-Course 3: Score = 76, GPA = 2.0
+--- Course Records ---
+1. Math | Score: 95.0 | GPA: 4.0
+2. English | Score: 88.0 | GPA: 3.33
 
-Your CGPA is: 3.11
-```
-
----
-
-## 🎯 Design Decisions
-
-* Raw scores are stored in a list
-* GPA values are computed dynamically (not stored)
-* CGPA is calculated when needed (not persisted)
-* Credit unit is constant to simplify v1 implementation
-
-This keeps the logic minimal and extensible for future versions.
-
----
-
-## 🚀 Future Improvements (V2+ Ideas)
-
-* Store data in a file (JSON or CSV)
-* Add per-course updates
-* Support variable credit units
-* Convert into a REST API (Flask / FastAPI)
-* Add automated unit tests
-
----
-
-## 📚 Learning Goals
+Your CGPA is: 3.67
+🎯 Design Decisions
+Data is stored persistently using CSV
+GPA values are computed dynamically
+CGPA is calculated from stored records
+Credit unit is constant for simplicity
+Menu-driven interface improves usability
+🚀 Future Improvements (V3+ Ideas)
+Edit or delete course records
+Support variable credit units
+Add data validation improvements
+Convert into REST API (Flask / FastAPI)
+Add automated unit tests
+Build a graphical interface (GUI)
+📚 Learning Goals
 
 This project demonstrates:
 
-* Function design and modular programming
-* Input validation
-* Control flow (loops & conditionals)
-* Basic academic calculation logic
-* Clean program entry structure
-
----
-
-## 👩‍💻 Author
+File handling with CSV
+Persistent data storage
+Modular programming design
+Input validation
+CLI application structure
+Real-world data processing workflow
+👩‍💻 Author
 
 Personal project built as part of a backend/data engineering learning journey.
